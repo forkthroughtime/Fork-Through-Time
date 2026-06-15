@@ -1,0 +1,576 @@
+/* =============================================
+   FORK THROUGH HISTORY — style.css
+   ============================================= */
+
+/* ---------- RESET & BASE ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:         #3d1f3a;      /* deep plum — page background */
+  --header-bg:  #2e1630;      /* slightly darker plum for header */
+  --footer-bg:  #f5f0e8;      /* light cream footer like reference */
+  --text:       #e8ddc8;      /* warm cream — main text */
+  --text-dim:   #a89880;      /* muted warm grey */
+  --accent:     #d4c48a;      /* light gold / yellow — stamp border, links */
+  --accent-dim: #8a7a50;      /* darker gold for rules */
+  --rule:       #5a3a55;      /* subtle plum rule lines */
+  --stamp-bg:   #2e1630;      /* behind stamp perforations */
+  --footer-text:#2e1630;      /* dark text on light footer */
+  --footer-dim: #6a5a48;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; opacity: 0.85; }
+
+/* ---------- SITE HEADER ---------- */
+.site-header {
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--rule);
+  padding: 1.4rem 2rem 0;
+}
+
+.header-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-bottom: 1.2rem;
+}
+
+/* BIG BLACKLETTER TITLE */
+.site-title {
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-size: clamp(2.8rem, 7vw, 6rem);
+  line-height: 1;
+  color: var(--accent);
+  letter-spacing: -0.01em;
+  flex: 1;
+}
+
+/* Square logo — height matches title text */
+.header-logo { flex-shrink: 0; }
+
+.logo-img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 4px;           /* square with barely-rounded corners */
+  border: 2px solid var(--accent);
+  display: block;
+}
+
+/* ---------- TICKER STRIP ---------- */
+.ticker-strip {
+  width: 100%;
+  overflow: hidden;
+  border-top: 1px solid var(--rule);
+  padding: 0.45rem 0;
+  white-space: nowrap;
+  background: var(--header-bg);
+}
+
+.ticker-track {
+  display: inline-flex;
+  animation: ticker-scroll 65s linear infinite;  /* slower */
+}
+
+.ticker-track:hover { animation-play-state: paused; }
+
+.ticker-text {
+  display: inline-block;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding-right: 3rem;
+  white-space: nowrap;
+}
+
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track { animation: none; }
+}
+
+/* ---------- STAMP FRAME (images) ---------- */
+/* Wrap images in .stamp-wrap for the postage border effect */
+.stamp-wrap {
+  display: inline-block;
+  padding: 10px;
+  background: var(--stamp-bg);
+  position: relative;
+}
+
+/* The perforated edge: punch holes around the wrapper using a radial mask */
+.stamp-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--bg);   /* page background shows through holes */
+  -webkit-mask-image:
+    radial-gradient(circle 7px at 50% 0%,   var(--bg) 7px, transparent 7px) top    / 18px 50% repeat-x,
+    radial-gradient(circle 7px at 50% 100%, var(--bg) 7px, transparent 7px) bottom / 18px 50% repeat-x,
+    radial-gradient(circle 7px at 0%   50%, var(--bg) 7px, transparent 7px) left   / 50% 18px repeat-y,
+    radial-gradient(circle 7px at 100% 50%, var(--bg) 7px, transparent 7px) right  / 50% 18px repeat-y;
+  mask-image:
+    radial-gradient(circle 7px at 50% 0%,   var(--bg) 7px, transparent 7px) top    / 18px 50% repeat-x,
+    radial-gradient(circle 7px at 50% 100%, var(--bg) 7px, transparent 7px) bottom / 18px 50% repeat-x,
+    radial-gradient(circle 7px at 0%   50%, var(--bg) 7px, transparent 7px) left   / 50% 18px repeat-y,
+    radial-gradient(circle 7px at 100% 50%, var(--bg) 7px, transparent 7px) right  / 50% 18px repeat-y;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Inner border in accent colour, same colour as the text */
+.stamp-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 2px solid var(--accent);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.stamp-wrap img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- LATEST RECIPE SECTION ---------- */
+.latest-recipe {
+  max-width: 960px;
+  margin: 3rem auto;
+  padding: 0 2rem;
+}
+
+.section-label {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+}
+
+.recipe-hero {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.recipe-hero-image-wrap {
+  position: sticky;
+  top: 2rem;
+}
+
+.recipe-hero-image-wrap .stamp-wrap {
+  width: 100%;
+}
+
+.recipe-hero-image-wrap .stamp-wrap img {
+  width: 100%;
+  height: 380px;
+}
+
+.recipe-meta {
+  font-family: 'EB Garamond', serif;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Section titles — Blackletter like site title */
+.recipe-title,
+.recipe-title a {
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  line-height: 1.1;
+  color: var(--accent);
+  margin-bottom: 0.7rem;
+}
+
+.recipe-title a:hover { text-decoration: none; opacity: 0.8; }
+
+/* Condensed italic caption */
+.recipe-caption {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--text-dim);
+  font-stretch: condensed;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+}
+
+.recipe-story { margin-bottom: 1rem; }
+
+.recipe-story p { margin-bottom: 0.8rem; }
+
+.recipe-rule {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 1.8rem 0;
+}
+
+h3 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.02em;
+}
+
+/* Ingredient checkboxes */
+.serves {
+  margin-bottom: 0.8rem;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+.ingredient-group-label {
+  margin: 1rem 0 0.4rem;
+  color: var(--text);
+}
+
+.ingredient-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 0.5rem;
+}
+
+.ingredient-list li {
+  padding: 0.25rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.ingredient-list label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.ingredient-list input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 13px;
+  height: 13px;
+  border: 1.5px solid var(--accent-dim);
+  border-radius: 2px;
+  flex-shrink: 0;
+  position: relative;
+  top: 2px;
+  cursor: pointer;
+  background: transparent;
+  transition: background 0.15s;
+}
+
+.ingredient-list input[type="checkbox"]:checked {
+  background: var(--accent-dim);
+}
+
+.ingredient-list input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: -2px;
+  left: 1px;
+  color: var(--bg);
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.ingredient-list label:has(input:checked) {
+  text-decoration: line-through;
+  color: var(--text-dim);
+}
+
+/* Method */
+.method-list {
+  padding-left: 1.4rem;
+  margin-bottom: 1.2rem;
+}
+
+.method-list li {
+  margin-bottom: 0.9rem;
+  font-size: 0.97rem;
+}
+
+.recipe-note {
+  border-left: 2px solid var(--accent-dim);
+  padding: 0.6rem 0.9rem;
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  margin: 1.5rem 0;
+  font-style: italic;
+}
+
+.read-more-btn {
+  display: inline-block;
+  margin-top: 1.2rem;
+  padding: 0.5rem 1.6rem;
+  border: 1px solid var(--accent-dim);
+  color: var(--accent);
+  font-family: 'EB Garamond', serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: background 0.2s, color 0.2s;
+}
+
+.read-more-btn:hover {
+  background: var(--accent-dim);
+  color: var(--bg);
+  text-decoration: none;
+}
+
+/* ---------- ARCHIVES — row list like reference site ---------- */
+.archives {
+  max-width: 680px;
+  margin: 4rem auto;
+  padding: 0 2rem;
+  border-top: 1px solid var(--rule);
+  padding-top: 2.5rem;
+}
+
+.archives-heading {
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+
+.archive-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Each row is a full-width clickable box with a top border — same 1px width */
+.archive-row {
+  display: flex;
+  gap: 1.2rem;
+  align-items: flex-start;
+  padding: 1.1rem 0;
+  border-top: 1px solid var(--rule);
+  color: var(--text);
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.archive-row:last-child { border-bottom: 1px solid var(--rule); }
+
+.archive-row:hover { background: rgba(255,255,255,0.03); text-decoration: none; }
+
+.archive-row-img {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+}
+
+.archive-row-img .stamp-wrap {
+  width: 80px;
+  height: 80px;
+  padding: 5px;
+}
+
+.archive-row-img .stamp-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.archive-row-body { flex: 1; }
+
+.archive-meta {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.2rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Archive titles — Blackletter */
+.archive-title {
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-size: 1.2rem;
+  line-height: 1.2;
+  color: var(--accent);
+  margin-bottom: 0.25rem;
+}
+
+.archive-caption {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--text-dim);
+  letter-spacing: -0.01em;
+}
+
+/* ---------- FOOTER — two columns, light background like reference ---------- */
+.site-footer {
+  background: var(--footer-bg);
+  color: var(--footer-text);
+  margin-top: 5rem;
+  padding: 0;
+}
+
+.footer-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  padding: 2.5rem 2rem 2rem;
+  border-bottom: 1px solid #d5c9b8;
+}
+
+.footer-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--footer-dim);
+  margin-bottom: 0.2rem;
+}
+
+.footer-colname {
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-size: 1.5rem;
+  color: var(--footer-text);
+  margin-bottom: 0.6rem;
+  line-height: 1.1;
+}
+
+.footer-body {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #4a3a2a;
+  margin-bottom: 0.3rem;
+}
+
+.footer-body a {
+  color: #4a3a2a;
+  text-decoration: underline;
+}
+
+.footer-body a:hover { opacity: 0.7; }
+
+.footer-bottom {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0.9rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--footer-dim);
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.footer-site-name {
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-size: 1.1rem;
+  color: var(--footer-text);
+}
+
+.footer-bottom a {
+  color: var(--footer-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.72rem;
+}
+
+/* ---------- POST PAGES ---------- */
+.post-back {
+  display: inline-block;
+  margin: 1.5rem 2rem 0;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+
+.post-back:hover { color: var(--accent); text-decoration: none; }
+
+.post-page {
+  max-width: 680px;
+  margin: 2rem auto 5rem;
+  padding: 0 2rem;
+}
+
+.post-page .recipe-meta { margin-bottom: 0.5rem; }
+
+.post-page h1 {
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 1.05;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+
+.post-image-wrap {
+  margin: 1.5rem auto 2rem;
+  max-width: 340px;
+}
+
+.post-image-wrap .stamp-wrap {
+  width: 100%;
+  padding: 12px;
+}
+
+.post-image-wrap .stamp-wrap img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 700px) {
+  .recipe-hero {
+    grid-template-columns: 1fr;
+  }
+  .recipe-hero-image-wrap {
+    position: static;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+  .footer-inner {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .header-inner { gap: 1rem; }
+  .logo-img { width: 70px; height: 70px; }
+  .site-title { font-size: clamp(2.2rem, 12vw, 4rem); }
+  .footer-bottom { flex-direction: column; text-align: center; }
+}
