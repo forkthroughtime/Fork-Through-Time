@@ -1,2 +1,2 @@
-# Fork-Through-Time
+# Fork-Through-Histpry
 A recipes &amp; food blog :)
